@@ -1,50 +1,7 @@
-qq wq
-
-
-qq1qq/*
+/*
      File: AVVideoWall.m
  Abstract: The AVVideoWall class, builds a video wall of live capture devices
-  Version: 1.1
- 
- Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
- Inc. ("Apple") in consideration of your agreement to the following
- terms, and your use, installation, modification or redistribution of
- this Apple software constitutes acceptance of these terms.  If you do
- not agree with these terms, please do not use, install, modify or
- redistribute this Apple software.
- 
- In consideration of your agreement to abide by the following terms, and
- subject to these terms, Apple grants you a personal, non-exclusive
- license, under Apple's copyrights in this original Apple software (the
- "Apple Software"), to use, reproduce, modify and redistribute the Apple
- Software, with or without modifications, in source and/or binary forms;
- provided that if you redistribute the Apple Software in its entirety and
- without modifications, you must retain this notice and the following
- text and disclaimers in all such redistributions of the Apple Software.
- Neither the name, trademarks, service marks or logos of Apple Inc. may
- be used to endorse or promote products derived from the Apple Software
- without specific prior written permission from Apple.  Except as
- expressly stated in this notice, no other rights or licenses, express or
- implied, are granted by Apple herein, including but not limited to any
- patent rights that may be infringed by your derivative works or by other
- works in which the Apple Software may be incorporated.
- 
- The Apple Software is provided by Apple on an "AS IS" basis.  APPLE
- MAKES NO WARRANTIES, EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION
- THE IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS
- FOR A PARTICULAR PURPOSE, REGARDING THE APPLE SOFTWARE OR ITS USE AND
- OPERATION ALONE OR IN COMBINATION WITH YOUR PRODUCTS.
- 
- IN NO EVENT SHALL APPLE BE LIABLE FOR ANY SPECIAL, INDIRECT, INCIDENTAL
- OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- INTERRUPTION) ARISING IN ANY WAY OUT OF THE USE, REPRODUCTION,
- MODIFICATION AND/OR DISTRIBUTION OF THE APPLE SOFTWARE, HOWEVER CAUSED
- AND WHETHER UNDER THEORY OF CONTRACT, TORT (INCLUDING NEGLIGENCE),
- STRICT LIABILITY OR OTHERWISE, EVEN IF APPLE HAS BEEN ADVISED OF THE
- POSSIBILITY OF SUCH DAMAGE.
- 
- Copyright (C) 2011 Apple Inc. All Rights Reserved.
+  Version: 1.1 2011
  
  */
 
@@ -59,8 +16,8 @@ qq1qq/*
 // Find the input port with the target media type
 - (AVCaptureInputPort *)portWithMediaType:(NSString *)mediaType
 {
-	for (AVCaptureInputPort *p in [self ports]) {
-		if ([[p mediaType] isEqualToString:mediaType])
+	for (AVCaptureInputPort *p in self.ports) {
+		if ([p.mediaType isEqualToString:mediaType])
 			return p;
 	}
 	return nil;
@@ -84,33 +41,26 @@ qq1qq/*
 {
 	for (AVCaptureVideoPreviewLayer *layer in _videoPreviewLayers)
 		[layer setSession:nil];
-    
-    [_session release];
-    [_window release];
-    [_videoPreviewLayers release];
-    [_homeLayerRects release];
-    
-    [super dealloc];
 }
 
 - (void)createWindowAndRootLayer
 {
 	// Create a screen-sized window
-    CGRect mainDisplayBounds = NSRectToCGRect([[NSScreen mainScreen] frame]);
+    CGRect mainDisplayBounds = NSRectToCGRect([NSScreen mainScreen].frame);
 	NSRect bounds = NSMakeRect(0, 0, mainDisplayBounds.size.width, mainDisplayBounds.size.height);
 	_window = [[NSWindow alloc] initWithContentRect:bounds styleMask:NSBorderlessWindowMask
 											backing:NSBackingStoreBuffered defer:NO screen:[NSScreen mainScreen]];
 	
 	// Set the window level to floating
     int windowLevel = NSFloatingWindowLevel;
-	[_window setLevel:windowLevel];
+	_window.level = windowLevel;
 	
 	// Make the content view layer-backed
-	NSView *windowContentView = [_window contentView];
+	NSView *windowContentView = _window.contentView;
 	[windowContentView setWantsLayer:YES];
 	
 	// Grab the Core Animation layer
-	_rootLayer = [windowContentView layer];
+	_rootLayer = windowContentView.layer;
 	
 	// Set its background color to opaque black
 	CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
@@ -175,8 +125,8 @@ qq1qq/*
 	
 	// Find video devices
 	NSMutableArray *devices = [self devicesThatCanProduceVideo];
-	NSInteger devicesCount = [devices count], currentDevice = 0;
-	CGRect rootBounds = [_rootLayer bounds];
+	NSInteger devicesCount = devices.count, currentDevice = 0;
+	CGRect rootBounds = _rootLayer.bounds;
 	if (devicesCount == 0)
 		return NO;
 	
@@ -227,18 +177,18 @@ qq1qq/*
 			[CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
 			
 			// Set the layer frame
-			[videoPreviewLayer setFrame:curLayerFrame];
+			videoPreviewLayer.frame = curLayerFrame;
 			
 			// Save the frame in an array for the "sendLayersHome" animation
 			[_homeLayerRects addObject:[NSValue valueWithRect:NSRectFromCGRect(curLayerFrame)]];
 			
 			// We want the video content to always fill the entire layer regardless of the layer size,
             // so set video gravity to ResizeAspectFill
-			[videoPreviewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
+			videoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
 			
 			// If the layer is at top of the square (i=0, 1), make it upside down
 			if ( i < 2 )
-				[connection setVideoOrientation:AVCaptureVideoOrientationPortraitUpsideDown];
+				connection.videoOrientation = AVCaptureVideoOrientationPortraitUpsideDown;
 			
 			// Add the preview layer to the root layer
 			[_rootLayer addSublayer:videoPreviewLayer];
@@ -259,10 +209,10 @@ qq1qq/*
 		for (AVCaptureVideoPreviewLayer *layer in _videoPreviewLayers) {
 			[layer removeAllAnimations];
             // Set the animation duration
-			[CATransaction setValue:[NSNumber numberWithFloat:5.0f] forKey:kCATransactionAnimationDuration];
+			[CATransaction setValue:@5.0f forKey:kCATransactionAnimationDuration];
             // Change the layer's position to some random value within the root layer
-			layer.position = CGPointMake([_rootLayer bounds].size.width * rand()/(CGFloat)RAND_MAX, 
-										 [_rootLayer bounds].size.height * rand()/(CGFloat)RAND_MAX);
+			layer.position = CGPointMake(_rootLayer.bounds.size.width * rand()/(CGFloat)RAND_MAX, 
+										 _rootLayer.bounds.size.height * rand()/(CGFloat)RAND_MAX);
             // Scale the layer 
 			CGFloat factor = rand()/(CGFloat)RAND_MAX * 2.0f;
 			CATransform3D transform = CATransform3DMakeScale(factor, factor, 1.0f);
@@ -290,12 +240,12 @@ qq1qq/*
 	[CATransaction begin];
     for (AVCaptureVideoPreviewLayer *layer in _videoPreviewLayers) {
         // Set the animation duration
-		[CATransaction setValue:[NSNumber numberWithFloat:1.0f] forKey:kCATransactionAnimationDuration];
+		[CATransaction setValue:@1.0f forKey:kCATransactionAnimationDuration];
         // Reset the layer's frame to initial values 
-		CGRect homeRect = NSRectToCGRect([(NSValue *)[_homeLayerRects objectAtIndex:curLayerIdx] rectValue]);
-		[layer setFrame:homeRect];
+		CGRect homeRect = NSRectToCGRect(((NSValue *)_homeLayerRects[curLayerIdx]).rectValue);
+		layer.frame = homeRect;
         // Reset the layer's transform to identity
-		[layer setTransform:CATransform3DIdentity];
+		layer.transform = CATransform3DIdentity;
 		curLayerIdx++;
 	}
     [CATransaction commit];
@@ -309,7 +259,7 @@ qq1qq/*
     // Create a capture session
 	_session = [[AVCaptureSession alloc] init];
     // Set the session preset
-	[_session setSessionPreset:AVCaptureSessionPreset640x480];
+	_session.sessionPreset = AVCaptureSessionPreset640x480;
 	
     // Create a wall of video out of the video capture devices on your Mac
 	BOOL success = [self setupVideoWall];

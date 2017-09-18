@@ -1,0 +1,10 @@
+/*
+     File: AVRecorder-Prefix.pch
+ Abstract: n/a
+ Version: 2.1 2012 
+ */
+
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+#endif
