@@ -13,7 +13,7 @@
 
 @property (nonatomic) GLuint defaultFBOName;
 
-- (instancetype) initWithDefaultFBO: (GLuint) defaultFBOName;
+- (instancetype) initWithDefaultFBO: (GLuint) defaultFBOName NS_DESIGNATED_INITIALIZER;
 - (void) resizeWithWidth:(GLuint)width AndHeight:(GLuint)height;
 - (void) render;
 - (void) dealloc;
