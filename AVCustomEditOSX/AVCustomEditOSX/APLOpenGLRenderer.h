@@ -1,7 +1,7 @@
 /*
-     File: APLOpenGLRenderer.h
- Abstract:  OpenGL base class renderer setups a CGLContextObj for rendering, it also loads, compiles and links the vertex and fragment shaders. 
-Version: 1.1 2013 
+ File: APLOpenGLRenderer.h
+ Abstract:  OpenGL base class renderer setups a CGLContextObj for rendering, it also loads, compiles and links the vertex and fragment shaders.
+ Version: 1.1 2013
  */
 
 #import <Foundation/Foundation.h>
@@ -12,23 +12,23 @@ Version: 1.1 2013
 
 enum
 {
-	UNIFORM_RGB,
-	UNIFORM_RENDER_TRANSFORM,
-   	NUM_UNIFORMS
+  UNIFORM_RGB,
+  UNIFORM_RENDER_TRANSFORM,
+  NUM_UNIFORMS
 };
 extern GLint uniforms[NUM_UNIFORMS];
 
 enum
 {
-	ATTRIB_VERTEX,
-	ATTRIB_TEXCOORD,
-   	NUM_ATTRIBUTES
+  ATTRIB_VERTEX,
+  ATTRIB_TEXCOORD,
+  NUM_ATTRIBUTES
 };
 
 @interface APLOpenGLRenderer : NSObject
 {
-	CGLContextObj _previousContext;
-    CGLContextObj _currentContext;
+  CGLContextObj _previousContext;
+  CGLContextObj _currentContext;
 }
 
 @property GLuint program;

@@ -1,0 +1,9 @@
+/*
+     File: StopNGo-Prefix.pch
+ Abstract: Prefix header for all source files in the 'StopNGo' project
+  Version: 1.0 2011 
+ */
+
+#ifdef __OBJC__
+	#import <Cocoa/Cocoa.h>
+#endif
