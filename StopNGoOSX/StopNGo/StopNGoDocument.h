@@ -12,7 +12,7 @@
 	IBOutlet NSView *previewView;
 	IBOutlet NSButton *takePictureButton;
 	AVCaptureSession *session;
-    AVCaptureVideoPreviewLayer *previewLayer;
+  AVCaptureVideoPreviewLayer *previewLayer;
 	AVCaptureStillImageOutput *stillImageOutput;
 	BOOL started;
 	NSURL *outputURL;
