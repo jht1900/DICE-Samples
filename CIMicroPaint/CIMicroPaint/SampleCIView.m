@@ -10,10 +10,11 @@
 #import <OpenGL/OpenGL.h>
 #import <OpenGL/gl.h>
 
+// --------------------------------------------------------------------------------------------------------
 @interface SampleCIView ()
 
-@property (nonatomic, strong) CIContext *context;
-@property (nonatomic, strong) NSDictionary *contextOptions;
+@property (nonatomic, strong) CIContext *       context;
+@property (nonatomic, strong) NSDictionary *    contextOptions;
 
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL displaysWhenScreenProfileChanges;
 - (void)viewWillMoveToWindow:(NSWindow*)newWindow;
@@ -21,14 +22,16 @@
 
 @end
 
+// --------------------------------------------------------------------------------------------------------
 @implementation SampleCIView
 {
-  NSRect				_lastBounds;
-  CGLContextObj		_cglContext;
-  NSOpenGLPixelFormat *pixelFormat;
-  CGDirectDisplayID	_directDisplayID;
+  NSRect                  _lastBounds;
+  CGLContextObj           _cglContext;
+  NSOpenGLPixelFormat *   pixelFormat;
+  CGDirectDisplayID       _directDisplayID;
 }
 
+// --------------------------------------------------------------------------------------------------------
 + (NSOpenGLPixelFormat *)defaultPixelFormat
 {
   static NSOpenGLPixelFormat *pf;
@@ -47,24 +50,36 @@
   return pf;
 }
 
+// --------------------------------------------------------------------------------------------------------
 - (void)dealloc
 {
+  NSLog(@"SampleCIView dealloc");
+
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+// --------------------------------------------------------------------------------------------------------
 - (void)setContextOptions:(NSDictionary *)dict
 {
+  NSLog(@"SampleCIView setContextOptions");
+
   _contextOptions = dict;
   self.context = nil;
 }
 
+// --------------------------------------------------------------------------------------------------------
 - (void)setImage:(CIImage *)image
 {
+  //NSLog(@"SampleCIView setImage image=%@", image);
+
   [self setImage:image dirtyRect:CGRectInfinite];
 }
 
+// --------------------------------------------------------------------------------------------------------
 - (void)setImage:(CIImage *)image dirtyRect:(CGRect)rect
 {
+  //NSLog(@"SampleCIView setImage image=%@ dirtyRect=%@", image, NSStringFromRect(rect));
+
   if (_image != image) {
     _image = image;
     if (CGRectIsInfinite(rect)) {
@@ -76,13 +91,16 @@
   }
 }
 
+// --------------------------------------------------------------------------------------------------------
 - (void)prepareOpenGL
 {
+  NSLog(@"SampleCIView prepareOpenGL");
+  
   GLint parm = 1;
-  /* Enable beam-synced updates. */
+  // Enable beam-synced updates.
   [self.openGLContext setValues:&parm forParameter:NSOpenGLCPSwapInterval];
-  /* Make sure that everything we don't need is disabled. Some of these
-   * are enabled by default and can slow down rendering. */
+  // Make sure that everything we don't need is disabled. Some of these
+  // are enabled by default and can slow down rendering.
   glDisable(GL_ALPHA_TEST);
   glDisable(GL_DEPTH_TEST);
   glDisable(GL_SCISSOR_TEST);
@@ -96,19 +114,23 @@
   glHint(GL_TRANSFORM_HINT_APPLE, GL_FASTEST);
 }
 
+// --------------------------------------------------------------------------------------------------------
 - (void)viewBoundsDidChange:(NSRect)bounds
 {
   /* For subclasses. */
 }
 
+// --------------------------------------------------------------------------------------------------------
 - (void)updateMatrices
 {
+  NSLog(@"SampleCIView updateMatrices");
+
   NSRect bounds = self.bounds;
   if (!NSEqualRects(bounds, _lastBounds)) {
     [self.openGLContext update];
-    /* Install an orthographic projection matrix (no perspective)
-     * with the origin in the bottom left and one unit equal to one
-     * device pixel. */
+    // Install an orthographic projection matrix (no perspective)
+    // with the origin in the bottom left and one unit equal to one
+    // device pixel.
     glViewport(0, 0, bounds.size.width, bounds.size.height);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -120,13 +142,17 @@
   }
 }
 
+// --------------------------------------------------------------------------------------------------------
 - (BOOL)displaysWhenScreenProfileChanges
 {
   return YES;
 }
 
+// --------------------------------------------------------------------------------------------------------
 - (void)viewWillMoveToWindow:(NSWindow*)newWindow
 {
+  NSLog(@"SampleCIView viewWillMoveToWindow");
+
   NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
   [center removeObserver:self name:NSWindowDidChangeScreenProfileNotification object:nil];
   [center addObserver:self selector:@selector(displayProfileChanged:) name:NSWindowDidChangeScreenProfileNotification object:newWindow];
@@ -136,8 +162,11 @@
   [newWindow setOneShot:NO];
 }
 
+// --------------------------------------------------------------------------------------------------------
 - (void)displayProfileChanged:(NSNotification*)notification
 {
+  NSLog(@"SampleCIView displayProfileChanged");
+
   CGDirectDisplayID oldDid = _directDisplayID;
   _directDisplayID = (CGDirectDisplayID)[self.window.screen.deviceDescription[@"NSScreenNumber"] pointerValue];
   if (_directDisplayID == oldDid) {
@@ -150,7 +179,6 @@
       pixelFormat = [[self class] defaultPixelFormat];
     }
   }
-  
   CGLLockContext(_cglContext);
   {
     // Create a new CIContext using the new output color space
@@ -164,7 +192,7 @@
   CGLUnlockContext(_cglContext);
 }
 
-
+// --------------------------------------------------------------------------------------------------------
 - (void)drawRect:(NSRect)rect
 {
   [self.openGLContext makeCurrentContext];
@@ -174,14 +202,14 @@
   if (self.context == nil) {
     [self displayProfileChanged:nil];
   }
-  
+
+  NSLog(@"SampleCIView drawRect context=%@", self.context);
+
   CGRect integralRect = CGRectIntegral(NSRectToCGRect(rect));
   
   if ([NSGraphicsContext currentContextDrawingToScreen]) {
     NSLog(@"currentContextDrawingToScreen");
-    
     [self updateMatrices];
-    
     // Clear the specified subrect of the OpenGL surface then render the image into the view.
     // Use the GL scissor test to clip to the subrect.
     // Ask CoreImage to generate an extra pixel in case it has to interpolate (allow for hardware inaccuracies).
@@ -210,9 +238,8 @@
   }
   else
   {
-    // Printing the view contents. Render using CG, not OpenGL.
     NSLog(@"Printing the view contents");
-
+    // Printing the view contents. Render using CG, not OpenGL.
     if ([self respondsToSelector:@selector (drawRect:inCIContext:)]) {
       [(id <SampleCIViewDraw>)self drawRect:NSRectFromCGRect(integralRect) inCIContext:self.context];
     }
@@ -231,4 +258,6 @@
   }
 }
 
+// --------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------
 @end
