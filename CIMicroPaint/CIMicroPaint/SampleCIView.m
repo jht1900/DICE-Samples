@@ -33,9 +33,8 @@
 {
   static NSOpenGLPixelFormat *pf;
   if (pf == nil) {
-    /*
-     Making sure the context's pixel format doesn't have a recovery renderer is important - otherwise CoreImage may not be able to create deeper context's that share textures with this one.
-     */
+    // Making sure the context's pixel format doesn't have a recovery renderer is important
+    // - otherwise CoreImage may not be able to create deeper context's that share textures with this one.
     static const NSOpenGLPixelFormatAttribute attr[] = {
       NSOpenGLPFAAccelerated,
       NSOpenGLPFANoRecovery,
@@ -155,8 +154,12 @@
   CGLLockContext(_cglContext);
   {
     // Create a new CIContext using the new output color space
-    // Since the cgl context will be rendered to the display, it is valid to rely on CI to get the colorspace from the context.
-    self.context = [CIContext contextWithCGLContext:_cglContext pixelFormat:pixelFormat.CGLPixelFormatObj colorSpace:nil options:_contextOptions];
+    // Since the cgl context will be rendered to the display,
+    // it is valid to rely on CI to get the colorspace from the context.
+    self.context = [CIContext contextWithCGLContext:_cglContext
+                                        pixelFormat:pixelFormat.CGLPixelFormatObj
+                                         colorSpace:nil
+                                            options:_contextOptions];
   }
   CGLUnlockContext(_cglContext);
 }
@@ -166,9 +169,8 @@
 {
   [self.openGLContext makeCurrentContext];
   
-  /* Allocate a CoreImage rendering context using the view's OpenGL
-   * context as its destination if none already exists. */
-  
+  // Allocate a CoreImage rendering context using the view's OpenGL
+  // context as its destination if none already exists.
   if (self.context == nil) {
     [self displayProfileChanged:nil];
   }
@@ -176,6 +178,8 @@
   CGRect integralRect = CGRectIntegral(NSRectToCGRect(rect));
   
   if ([NSGraphicsContext currentContextDrawingToScreen]) {
+    NSLog(@"currentContextDrawingToScreen");
+    
     [self updateMatrices];
     
     // Clear the specified subrect of the OpenGL surface then render the image into the view.
@@ -206,8 +210,9 @@
   }
   else
   {
-    /* Printing the view contents. Render using CG, not OpenGL. */
-    
+    // Printing the view contents. Render using CG, not OpenGL.
+    NSLog(@"Printing the view contents");
+
     if ([self respondsToSelector:@selector (drawRect:inCIContext:)]) {
       [(id <SampleCIViewDraw>)self drawRect:NSRectFromCGRect(integralRect) inCIContext:self.context];
     }

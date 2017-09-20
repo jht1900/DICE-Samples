@@ -100,7 +100,7 @@
             </items>
         </menu>
         <window title="CIMicroPaint" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" showsToolbarButton="NO" animationBehavior="default" id="536" userLabel="Window">
-            <windowStyleMask key="styleMask" titled="YES"/>
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="97" y="379" width="531" height="409"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
