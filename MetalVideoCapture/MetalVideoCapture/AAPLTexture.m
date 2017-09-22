@@ -46,34 +46,37 @@
 // assumes png file
 - (BOOL)loadIntoTextureWithDevice:(id <MTLDevice>)device
 {
-    UIImage *image = [UIImage imageWithContentsOfFile:self.pathToTextureFile];
-    if (!image)
-        return NO;
-    
-    self.width = (uint32_t)CGImageGetWidth(image.CGImage);
-    self.height = (uint32_t)CGImageGetHeight(image.CGImage);
-    
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    CGContextRef context = CGBitmapContextCreate( NULL, self.width, self.height, 8, 4 * self.width, colorSpace, (CGBitmapInfo)kCGImageAlphaPremultipliedLast );
-    CGContextDrawImage( context, CGRectMake( 0, 0, self.width, self.height ), image.CGImage );
-    
-    MTLTextureDescriptor *texDesc = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatRGBA8Unorm
-                                                                                     width:self.width
-                                                                                    height:self.height
-                                                                                 mipmapped:NO];
-    self.target = texDesc.textureType;
-    self.texture = [device newTextureWithDescriptor:texDesc];
-    if (!self.texture)
-        return NO;
-    
-    [self.texture replaceRegion:MTLRegionMake2D(0, 0, self.width, self.height)
-                    mipmapLevel:0
-                      withBytes:CGBitmapContextGetData(context)
-                    bytesPerRow:4 * self.width];
-    
-    CGColorSpaceRelease( colorSpace );
-    CGContextRelease(context);
-    
+#if TARGET_IOS
+	UIImage *image = [UIImage imageWithContentsOfFile:self.pathToTextureFile];
+	if (!image)
+		return NO;
+	
+	self.width = (uint32_t)CGImageGetWidth(image.CGImage);
+	self.height = (uint32_t)CGImageGetHeight(image.CGImage);
+	
+	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+	CGContextRef context = CGBitmapContextCreate( NULL, self.width, self.height, 8, 4 * self.width, colorSpace, (CGBitmapInfo)kCGImageAlphaPremultipliedLast );
+	CGContextDrawImage( context, CGRectMake( 0, 0, self.width, self.height ), image.CGImage );
+
+	MTLTextureDescriptor *texDesc = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatRGBA8Unorm
+																																										 width:self.width
+																																										height:self.height
+																																								 mipmapped:NO];
+	self.target = texDesc.textureType;
+	self.texture = [device newTextureWithDescriptor:texDesc];
+	if (!self.texture)
+		return NO;
+	
+	[self.texture replaceRegion:MTLRegionMake2D(0, 0, self.width, self.height)
+									mipmapLevel:0
+										withBytes:CGBitmapContextGetData(context)
+									bytesPerRow:4 * self.width];
+	
+	CGColorSpaceRelease( colorSpace );
+	CGContextRelease(context);
+#else
+#endif
+	
     return YES;
 }
 
@@ -84,6 +87,7 @@
 // assumes png file
 - (BOOL)loadIntoTextureWithDevice:(id <MTLDevice>)device
 {
+#if TARGET_IOS
     UIImage *image = [UIImage imageWithContentsOfFile:self.pathToTextureFile];
     if (!image)
         return NO;
@@ -115,7 +119,9 @@
     
     CGColorSpaceRelease( colorSpace );
     CGContextRelease(context);
-    
+#else
+#endif
+	
     return YES;
 }
 

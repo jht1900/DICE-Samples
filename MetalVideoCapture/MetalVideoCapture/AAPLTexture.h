@@ -6,7 +6,12 @@
  Texture Loading classes for Metal. Includes examples of how to load a 2D, and Cubemap textures.
  */
 
+#if TARGET_IOS
 #import <UIKit/UIKit.h>
+#else
+#import <Cocoa/Cocoa.h>
+#endif
+
 #import <Metal/Metal.h>
 
 @interface AAPLTexture : NSObject

@@ -8,11 +8,20 @@
 
 #import <QuartzCore/CAMetalLayer.h>
 #import <Metal/Metal.h>
+
+#ifdef TARGET_IOS
 #import <UIKit/UIKit.h>
+#else
+#import <Cocoa/Cocoa.h>
+#endif
 
 @protocol AAPLViewDelegate;
 
+#ifdef TARGET_IOS
 @interface AAPLView : UIView
+#else
+@interface AAPLView : NSView
+#endif
 @property (nonatomic, weak) IBOutlet id <AAPLViewDelegate> delegate;
 
 // view has a handle to the metal device when created

@@ -6,13 +6,13 @@
  main
  */
 
-
 #ifdef TARGET_IOS
 #import <UIKit/UIKit.h>
-#import "AAPLAppDelegate.h"
 #else // OS X
 #import <Cocoa/Cocoa.h>
 #endif
+
+#import "AAPLAppDelegate.h"
 
 int main(int argc, char * argv[]) {
 	

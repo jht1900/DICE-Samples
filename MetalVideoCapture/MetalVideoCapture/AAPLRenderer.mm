@@ -13,7 +13,9 @@
 #import "AAPLPVRTexture.h"
 #import "AAPLTransforms.h"
 
+#if TARGET_IOS
 #import <UIKit/UIDevice.h>
+#endif
 #import <simd/simd.h>
 #import <CoreVideo/CVMetalTextureCache.h>
 
@@ -485,7 +487,8 @@ static const simd::float4 cubeVertexData[] =
     // write the skybox transformation data into the current constant buffer
     uniforms->skybox_modelview_projection_matrix = _projectionMatrix * skyboxModelViewMatrix;
     
-    // Set the device orientation
+#if TARGET_IOS
+   // Set the device orientation
     switch ([UIApplication sharedApplication].statusBarOrientation)
     {
         case UIDeviceOrientationUnknown:
@@ -507,6 +510,7 @@ static const simd::float4 cubeVertexData[] =
             uniforms->orientation = AAPL::Portrait;
             break;
     }
+#endif
 }
 
 - (void)viewController:(AAPLViewController *)controller willPause:(BOOL)pause

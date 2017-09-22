@@ -6,11 +6,20 @@
  View Controller for Metal Sample Code. Maintains a CADisplayLink timer that runs on the main thread and triggers rendering in AAPLView. Provides update callbacks to its delegate on the timer, prior to triggering rendering.
  */
 
+#if TARGET_IOS
 #import <UIKit/UIKit.h>
+#else 
+#import <Cocoa/Cocoa.h>
+#endif
 
 @protocol AAPLViewControllerDelegate;
 
+#if TARGET_IOS
 @interface AAPLViewController : UIViewController
+#else
+@interface AAPLViewController : NSViewController
+#endif
+
 @property (nonatomic, weak) IBOutlet id <AAPLViewControllerDelegate> delegate;
 
 // the time interval from the last draw

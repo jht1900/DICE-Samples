@@ -16,8 +16,10 @@
 {
 @private
     // app control
-    CADisplayLink *_timer;
-    
+#if TARGET_IOS
+	CADisplayLink *_timer;
+#endif
+	
     // boolean to determine if the first draw has occured
     BOOL _firstDrawOccurred;
     
@@ -32,45 +34,48 @@
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                    name: UIApplicationDidEnterBackgroundNotification
-                                                  object: nil];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                    name: UIApplicationWillEnterForegroundNotification
-                                                  object: nil];
-    
-    if(_timer)
-    {
-        [self stopGameLoop];
-    }
+#if TARGET_IOS
+	
+	[[NSNotificationCenter defaultCenter] removeObserver: self
+																									name: UIApplicationDidEnterBackgroundNotification
+																								object: nil];
+	
+	[[NSNotificationCenter defaultCenter] removeObserver: self
+																									name: UIApplicationWillEnterForegroundNotification
+																								object: nil];
+	if(_timer)
+	{
+		[self stopGameLoop];
+	}
+#endif
 }
 
 - (void)initCommon
 {
-    _renderer = [AAPLRenderer new];
-    self.delegate = _renderer;
-    
-    //  Register notifications to start/stop drawing as this app moves into the background
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(didEnterBackground:)
-                                                 name: UIApplicationDidEnterBackgroundNotification
-                                               object: nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(willEnterForeground:)
-                                                 name: UIApplicationWillEnterForegroundNotification
-                                               object: nil];
-    
-    _interval = 1;
+	_renderer = [AAPLRenderer new];
+	self.delegate = _renderer;
+	
+#if TARGET_IOS
+	//  Register notifications to start/stop drawing as this app moves into the background
+	[[NSNotificationCenter defaultCenter] addObserver: self
+																					 selector: @selector(didEnterBackground:)
+																							 name: UIApplicationDidEnterBackgroundNotification
+																						 object: nil];
+	
+	[[NSNotificationCenter defaultCenter] addObserver: self
+																					 selector: @selector(willEnterForeground:)
+																							 name: UIApplicationWillEnterForegroundNotification
+																						 object: nil];
+#endif
+	
+	_interval = 1;
 }
 
 - (instancetype)init
 {
     self = [super init];
-    
-    if(self)
-    {
+	
+    if(self) {
         [self initCommon];
     }
     return self;
@@ -117,12 +122,14 @@
 
 - (void)dispatchGameLoop
 {
+#if TARGET_IOS
     // create a game loop timer using a display link
     _timer = [[UIScreen mainScreen] displayLinkWithTarget:self
                                                  selector:@selector(gameloop)];
     _timer.frameInterval = _interval;
     [_timer addToRunLoop:[NSRunLoop mainRunLoop]
                  forMode:NSDefaultRunLoopMode];
+#endif
 }
 
 // the main game loop called by the timer above
@@ -160,8 +167,8 @@
 
 - (void)stopGameLoop
 {
-    if(_timer)
-        [_timer invalidate];
+//    if(_timer) // !!@ Port
+//        [_timer invalidate];
 }
 
 - (void)setPaused:(BOOL)pause
@@ -171,7 +178,7 @@
         return;
     }
     
-    if(_timer)
+//    if(_timer)// !!@ Port
     {
         // inform the delegate we are about to pause
         [_delegate viewController:self
@@ -180,15 +187,15 @@
         if(pause == YES)
         {
             _gameLoopPaused = pause;
-            _timer.paused   = YES;
-            
+//            _timer.paused   = YES;// !!@ Port
+					
             // ask the view to release textures until its resumed
             [(AAPLView *)self.view releaseTextures];
         }
         else
         {
             _gameLoopPaused = pause;
-            _timer.paused   = NO;
+//            _timer.paused   = NO;// !!@ Port
         }
     }
 }
@@ -208,6 +215,7 @@
     [self setPaused:NO];
 }
 
+#if TARGET_IOS
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -223,5 +231,6 @@
     // end the gameloop
     [self stopGameLoop];
 }
+#endif
 
 @end

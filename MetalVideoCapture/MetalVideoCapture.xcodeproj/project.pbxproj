@@ -30,6 +30,22 @@
 		626867C61A6736D100EDC9EF /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 626867C51A6736D100EDC9EF /* Metal.framework */; };
 		626867C71A67372500EDC9EF /* copper_mipmap_2.pvr in Resources */ = {isa = PBXBuildFile; fileRef = 626867A21A67351000EDC9EF /* copper_mipmap_2.pvr */; };
 		626867C81A67372500EDC9EF /* copper_mipmap_4.pvr in Resources */ = {isa = PBXBuildFile; fileRef = 626867A31A67351000EDC9EF /* copper_mipmap_4.pvr */; };
+		BA0D679B1F759AFC00601F41 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BA0D679A1F759AFC00601F41 /* Assets.xcassets */; };
+		BA0D679E1F759AFC00601F41 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BA0D679C1F759AFC00601F41 /* Main.storyboard */; };
+		BA0D67A31F759B4100601F41 /* AAPLRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 626867961A6734AE00EDC9EF /* AAPLRenderer.mm */; };
+		BA0D67A41F759B4600601F41 /* AAPLAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 626867A81A67355C00EDC9EF /* AAPLAppDelegate.mm */; };
+		BA0D67A51F759B4900601F41 /* AAPLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 626867AA1A67355C00EDC9EF /* AAPLView.mm */; };
+		BA0D67A61F759B4C00601F41 /* AAPLViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 626867AC1A67355C00EDC9EF /* AAPLViewController.mm */; };
+		BA0D67A71F759B4F00601F41 /* AAPLTransforms.mm in Sources */ = {isa = PBXBuildFile; fileRef = 626867B31A67356500EDC9EF /* AAPLTransforms.mm */; };
+		BA0D67A81F759B5400601F41 /* AAPLTexture.m in Sources */ = {isa = PBXBuildFile; fileRef = 626867B61A67356F00EDC9EF /* AAPLTexture.m */; };
+		BA0D67A91F759B5700601F41 /* AAPLPVRTexture.m in Sources */ = {isa = PBXBuildFile; fileRef = 626867B81A67356F00EDC9EF /* AAPLPVRTexture.m */; };
+		BA0D67AA1F759B5A00601F41 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 626867921A6734A100EDC9EF /* main.m */; };
+		BA0D67AD1F75A82A00601F41 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA0D67AC1F75A82A00601F41 /* AVFoundation.framework */; };
+		BA0D67B31F75A8A400601F41 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA0D67AE1F75A8A400601F41 /* CoreGraphics.framework */; };
+		BA0D67B41F75A8A400601F41 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA0D67AF1F75A8A400601F41 /* CoreMedia.framework */; };
+		BA0D67B51F75A8A400601F41 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA0D67B01F75A8A400601F41 /* CoreVideo.framework */; };
+		BA0D67B61F75A8A400601F41 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA0D67B11F75A8A400601F41 /* Metal.framework */; };
+		BA0D67B71F75A8A400601F41 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA0D67B21F75A8A400601F41 /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +83,16 @@
 		626867C31A6736CB00EDC9EF /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		626867C51A6736D100EDC9EF /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		BA0D67891F75607E00601F41 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		BA0D678F1F759AFC00601F41 /* MetalVideoCapture-OSX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MetalVideoCapture-OSX.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BA0D679A1F759AFC00601F41 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BA0D679D1F759AFC00601F41 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		BA0D679F1F759AFC00601F41 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BA0D67AC1F75A82A00601F41 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
+		BA0D67AE1F75A8A400601F41 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
+		BA0D67AF1F75A8A400601F41 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/System/Library/Frameworks/CoreMedia.framework; sourceTree = DEVELOPER_DIR; };
+		BA0D67B01F75A8A400601F41 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/System/Library/Frameworks/CoreVideo.framework; sourceTree = DEVELOPER_DIR; };
+		BA0D67B11F75A8A400601F41 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/System/Library/Frameworks/Metal.framework; sourceTree = DEVELOPER_DIR; };
+		BA0D67B21F75A8A400601F41 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +109,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BA0D678C1F759AFC00601F41 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BA0D67B31F75A8A400601F41 /* CoreGraphics.framework in Frameworks */,
+				BA0D67B41F75A8A400601F41 /* CoreMedia.framework in Frameworks */,
+				BA0D67B51F75A8A400601F41 /* CoreVideo.framework in Frameworks */,
+				BA0D67B61F75A8A400601F41 /* Metal.framework in Frameworks */,
+				BA0D67B71F75A8A400601F41 /* QuartzCore.framework in Frameworks */,
+				BA0D67AD1F75A82A00601F41 /* AVFoundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -91,7 +130,9 @@
 			children = (
 				BA0D67891F75607E00601F41 /* README.md */,
 				626867671A67341B00EDC9EF /* MetalVideoCapture */,
+				BA0D67901F759AFC00601F41 /* MetalVideoCapture-OSX */,
 				626867661A67341B00EDC9EF /* Products */,
+				BA0D67AB1F75A82A00601F41 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -99,6 +140,7 @@
 			isa = PBXGroup;
 			children = (
 				626867651A67341B00EDC9EF /* MetalVideoCapture.app */,
+				BA0D678F1F759AFC00601F41 /* MetalVideoCapture-OSX.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -215,6 +257,29 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
+		BA0D67901F759AFC00601F41 /* MetalVideoCapture-OSX */ = {
+			isa = PBXGroup;
+			children = (
+				BA0D679A1F759AFC00601F41 /* Assets.xcassets */,
+				BA0D679C1F759AFC00601F41 /* Main.storyboard */,
+				BA0D679F1F759AFC00601F41 /* Info.plist */,
+			);
+			path = "MetalVideoCapture-OSX";
+			sourceTree = "<group>";
+		};
+		BA0D67AB1F75A82A00601F41 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BA0D67AE1F75A8A400601F41 /* CoreGraphics.framework */,
+				BA0D67AF1F75A8A400601F41 /* CoreMedia.framework */,
+				BA0D67B01F75A8A400601F41 /* CoreVideo.framework */,
+				BA0D67B11F75A8A400601F41 /* Metal.framework */,
+				BA0D67B21F75A8A400601F41 /* QuartzCore.framework */,
+				BA0D67AC1F75A82A00601F41 /* AVFoundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -235,6 +300,23 @@
 			productReference = 626867651A67341B00EDC9EF /* MetalVideoCapture.app */;
 			productType = "com.apple.product-type.application";
 		};
+		BA0D678E1F759AFC00601F41 /* MetalVideoCapture-OSX */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BA0D67A01F759AFC00601F41 /* Build configuration list for PBXNativeTarget "MetalVideoCapture-OSX" */;
+			buildPhases = (
+				BA0D678B1F759AFC00601F41 /* Sources */,
+				BA0D678C1F759AFC00601F41 /* Frameworks */,
+				BA0D678D1F759AFC00601F41 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "MetalVideoCapture-OSX";
+			productName = "MetalVideoCapture-OSX";
+			productReference = BA0D678F1F759AFC00601F41 /* MetalVideoCapture-OSX.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -247,6 +329,11 @@
 					626867641A67341B00EDC9EF = {
 						CreatedOnToolsVersion = 6.1;
 						DevelopmentTeam = 3RCW2SSL8G;
+					};
+					BA0D678E1F759AFC00601F41 = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = 3RCW2SSL8G;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -264,6 +351,7 @@
 			projectRoot = "";
 			targets = (
 				626867641A67341B00EDC9EF /* MetalVideoCapture */,
+				BA0D678E1F759AFC00601F41 /* MetalVideoCapture-OSX */,
 			);
 		};
 /* End PBXProject section */
@@ -280,6 +368,15 @@
 				626867781A67341B00EDC9EF /* Images.xcassets in Resources */,
 				626867A11A67350A00EDC9EF /* copper.png in Resources */,
 				6268679F1A67350300EDC9EF /* skybox.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BA0D678D1F759AFC00601F41 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BA0D679B1F759AFC00601F41 /* Assets.xcassets in Resources */,
+				BA0D679E1F759AFC00601F41 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,6 +400,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BA0D678B1F759AFC00601F41 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BA0D67A91F759B5700601F41 /* AAPLPVRTexture.m in Sources */,
+				BA0D67A81F759B5400601F41 /* AAPLTexture.m in Sources */,
+				BA0D67A51F759B4900601F41 /* AAPLView.mm in Sources */,
+				BA0D67A41F759B4600601F41 /* AAPLAppDelegate.mm in Sources */,
+				BA0D67A31F759B4100601F41 /* AAPLRenderer.mm in Sources */,
+				BA0D67A61F759B4C00601F41 /* AAPLViewController.mm in Sources */,
+				BA0D67A71F759B4F00601F41 /* AAPLTransforms.mm in Sources */,
+				BA0D67AA1F759B5A00601F41 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
@@ -312,6 +424,14 @@
 				6268677A1A67341B00EDC9EF /* Base */,
 			);
 			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+		BA0D679C1F759AFC00601F41 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BA0D679D1F759AFC00601F41 /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -409,12 +529,12 @@
 				DEVELOPMENT_TEAM = 3RCW2SSL8G;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
-					TARGET_IOS,
+					"TARGET_IOS=1",
 				);
 				INFOPLIST_FILE = MetalVideoCapture/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.MetalVideoCapture";
+				PRODUCT_BUNDLE_IDENTIFIER = com.j4u2.dice.MetalVideoCapture;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -426,13 +546,56 @@
 				DEVELOPMENT_TEAM = 3RCW2SSL8G;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
-					TARGET_IOS,
+					"TARGET_IOS=1",
 				);
 				INFOPLIST_FILE = MetalVideoCapture/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.MetalVideoCapture";
+				PRODUCT_BUNDLE_IDENTIFIER = com.j4u2.dice.MetalVideoCapture;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		BA0D67A11F759AFC00601F41 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 3RCW2SSL8G;
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
+				INFOPLIST_FILE = "MetalVideoCapture-OSX/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.j4u2.dice.MetalVideoCapture-OSX";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		BA0D67A21F759AFC00601F41 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 3RCW2SSL8G;
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
+				INFOPLIST_FILE = "MetalVideoCapture-OSX/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.j4u2.dice.MetalVideoCapture-OSX";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -456,6 +619,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		BA0D67A01F759AFC00601F41 /* Build configuration list for PBXNativeTarget "MetalVideoCapture-OSX" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BA0D67A11F759AFC00601F41 /* Debug */,
+				BA0D67A21F759AFC00601F41 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};

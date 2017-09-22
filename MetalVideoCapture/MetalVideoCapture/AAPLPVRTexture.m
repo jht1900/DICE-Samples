@@ -81,11 +81,13 @@ typedef struct _PVRTexHeader
 	if (formatFlags == kPVRTextureFlagTypePVRTC_4 || formatFlags == kPVRTextureFlagTypePVRTC_2)
 	{
 		[_imageData removeAllObjects];
-		
+
+#if TARGET_IOS
 		if (formatFlags == kPVRTextureFlagTypePVRTC_4)
 			self.pixelFormat = MTLPixelFormatPVRTC_RGBA_4BPP;
 		else if (formatFlags == kPVRTextureFlagTypePVRTC_2)
 			self.pixelFormat = MTLPixelFormatPVRTC_RGBA_2BPP;
+#endif
 	
 		self.width = width = CFSwapInt32LittleToHost(header->width);
 		self.height = height = CFSwapInt32LittleToHost(header->height);
