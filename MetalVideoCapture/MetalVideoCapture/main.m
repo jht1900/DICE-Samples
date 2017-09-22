@@ -7,11 +7,20 @@
  */
 
 
+#ifdef TARGET_IOS
 #import <UIKit/UIKit.h>
 #import "AAPLAppDelegate.h"
+#else // OS X
+#import <Cocoa/Cocoa.h>
+#endif
 
 int main(int argc, char * argv[]) {
-    @autoreleasepool {
-        return UIApplicationMain(argc, argv, nil, NSStringFromClass([AAPLAppDelegate class]));
-    }
+	
+#ifdef TARGET_IOS
+	@autoreleasepool {
+		return UIApplicationMain(argc, argv, nil, NSStringFromClass([AAPLAppDelegate class]));
+	}
+#else
+	return NSApplicationMain(argc, (const char**)argv);
+#endif
 }
