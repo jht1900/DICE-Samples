@@ -1,3 +1,12 @@
+
+```bash
+-- 2017-09-22 Sat ----------------------------------------------------------------------------
+Attempt to convert MetalVideoCapture to osx,
+ran into few problems.
+# /Users/epdev/Desktop/-0DICE-Samples/DICE-Samples/MetalVideoCapture/MetalVideoCapture.xcodeproj 
+Search for TARGET_IOS to find issues.
+```
+
 # MetalVideoCapture
 
 This sample demonstrates how to stream captured video textures (from the
