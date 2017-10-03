@@ -70,7 +70,7 @@ static const GLfloat kColorConversion709[] = {
 - (void)setupBuffers;
 - (void)cleanUpTextures;
 
-- (BOOL)loadShaders;
+@property (NS_NONATOMIC_IOSONLY, readonly) BOOL loadShaders;
 - (BOOL)compileShader:(GLuint *)shader type:(GLenum)type URL:(NSURL *)URL;
 - (BOOL)linkProgram:(GLuint)prog;
 - (BOOL)validateProgram:(GLuint)prog;
@@ -84,18 +84,18 @@ static const GLfloat kColorConversion709[] = {
 	return [CAEAGLLayer class];
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
 	if ((self = [super initWithCoder:aDecoder]))
 	{
 		// Use 2x scale factor on Retina displays.
-		self.contentScaleFactor = [[UIScreen mainScreen] scale];
+		self.contentScaleFactor = [UIScreen mainScreen].scale;
 
 		// Get and configure the layer.
 		CAEAGLLayer *eaglLayer = (CAEAGLLayer *)self.layer;
 
 		eaglLayer.opaque = TRUE;
-		eaglLayer.drawableProperties = @{ kEAGLDrawablePropertyRetainedBacking :[NSNumber numberWithBool:NO],
+		eaglLayer.drawableProperties = @{ kEAGLDrawablePropertyRetainedBacking :@NO,
 										  kEAGLDrawablePropertyColorFormat : kEAGLColorFormatRGBA8};
 
 		// Set the context into which the frames will be drawn.
@@ -423,13 +423,13 @@ static const GLfloat kColorConversion709[] = {
     NSError *error;
     NSString *sourceString = [[NSString alloc] initWithContentsOfURL:URL encoding:NSUTF8StringEncoding error:&error];
     if (sourceString == nil) {
-		NSLog(@"Failed to load vertex shader: %@", [error localizedDescription]);
+		NSLog(@"Failed to load vertex shader: %@", error.localizedDescription);
         return NO;
     }
     
 	GLint status;
 	const GLchar *source;
-	source = (GLchar *)[sourceString UTF8String];
+	source = (GLchar *)sourceString.UTF8String;
 	
 	*shader = glCreateShader(type);
 	glShaderSource(*shader, 1, &source, NULL);

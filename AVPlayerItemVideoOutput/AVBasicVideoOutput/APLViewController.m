@@ -65,22 +65,22 @@ static void *AVPlayerItemStatusContext = &AVPlayerItemStatusContext;
 {
 	[super viewDidLoad];
 	
-	self.playerView.lumaThreshold = [[self lumaLevelSlider] value];
-	self.playerView.chromaThreshold = [[self chromaLevelSlider] value];
+	self.playerView.lumaThreshold = self.lumaLevelSlider.value;
+	self.playerView.chromaThreshold = self.chromaLevelSlider.value;
 
 	_player = [[AVPlayer alloc] init];
     [self addTimeObserverToPlayer];
 	
 	// Setup CADisplayLink which will callback displayPixelBuffer: at every vsync.
 	self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(displayLinkCallback:)];
-	[[self displayLink] addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-	[[self displayLink] setPaused:YES];
+	[self.displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+	[self.displayLink setPaused:YES];
 	
 	// Setup AVPlayerItemVideoOutput with the required pixelbuffer attributes.
 	NSDictionary *pixBuffAttributes = @{(id)kCVPixelBufferPixelFormatTypeKey: @(kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange)};
 	self.videoOutput = [[AVPlayerItemVideoOutput alloc] initWithPixelBufferAttributes:pixBuffAttributes];
 	_myVideoOutputQueue = dispatch_queue_create("myVideoOutputQueue", DISPATCH_QUEUE_SERIAL);
-	[[self videoOutput] setDelegate:self queue:_myVideoOutputQueue];
+	[self.videoOutput setDelegate:self queue:_myVideoOutputQueue];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -112,11 +112,11 @@ static void *AVPlayerItemStatusContext = &AVPlayerItemStatusContext;
 	
 	switch (tag) {
 		case LUMA_SLIDER_TAG: {
-			self.playerView.lumaThreshold = [[self lumaLevelSlider] value];
+			self.playerView.lumaThreshold = self.lumaLevelSlider.value;
 			break;
 		}
 		case CHROMA_SLIDER_TAG: {
-			self.playerView.chromaThreshold = [[self chromaLevelSlider] value];
+			self.playerView.chromaThreshold = self.chromaLevelSlider.value;
 			break;
 		}
 		default:
@@ -127,10 +127,10 @@ static void *AVPlayerItemStatusContext = &AVPlayerItemStatusContext;
 - (IBAction)loadMovieFromCameraRoll:(id)sender
 {
 	[_player pause];
-	[[self displayLink] setPaused:YES];
+	[self.displayLink setPaused:YES];
 	
-	if ([[self popover] isPopoverVisible]) {
-		[[self popover] dismissPopoverAnimated:YES];
+	if (self.popover.popoverVisible) {
+		[self.popover dismissPopoverAnimated:YES];
 	}
 	// Initialize UIImagePickerController to select a movie from the camera roll
 	APLImagePickerController *videoPicker = [[APLImagePickerController alloc] init];
@@ -139,10 +139,10 @@ static void *AVPlayerItemStatusContext = &AVPlayerItemStatusContext;
 	videoPicker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
 	videoPicker.mediaTypes = @[(NSString*)kUTTypeMovie];
 
-	if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
 		self.popover = [[UIPopoverController alloc] initWithContentViewController:videoPicker];
 		self.popover.delegate = self;
-		[[self popover] presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
+		[self.popover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
 	}
 	else {
 		[self presentViewController:videoPicker animated:YES completion:nil];
@@ -170,22 +170,22 @@ static void *AVPlayerItemStatusContext = &AVPlayerItemStatusContext;
 	 */
 	
 	// Remove video output from old item, if any.
-	[[_player currentItem] removeOutput:self.videoOutput];
+	[_player.currentItem removeOutput:self.videoOutput];
 
 	AVPlayerItem *item = [AVPlayerItem playerItemWithURL:URL];
-	AVAsset *asset = [item asset];
+	AVAsset *asset = item.asset;
 	
 	[asset loadValuesAsynchronouslyForKeys:@[@"tracks"] completionHandler:^{
 			
 		if ([asset statusOfValueForKey:@"tracks" error:nil] == AVKeyValueStatusLoaded) {
 			NSArray *tracks = [asset tracksWithMediaType:AVMediaTypeVideo];
-			if ([tracks count] > 0) {
+			if (tracks.count > 0) {
 				// Choose the first video track.
-				AVAssetTrack *videoTrack = [tracks objectAtIndex:0];
+				AVAssetTrack *videoTrack = tracks[0];
 				[videoTrack loadValuesAsynchronouslyForKeys:@[@"preferredTransform"] completionHandler:^{
 					
 					if ([videoTrack statusOfValueForKey:@"preferredTransform" error:nil] == AVKeyValueStatusLoaded) {
-						CGAffineTransform preferredTransform = [videoTrack preferredTransform];
+						CGAffineTransform preferredTransform = videoTrack.preferredTransform;
 						
 						/*
                          The orientation of the camera while recording affects the orientation of the images received from an AVPlayerItemVideoOutput. Here we compute a rotation that is used to correctly orientate the video.
@@ -215,7 +215,7 @@ static void *AVPlayerItemStatusContext = &AVPlayerItemStatusContext;
 {
 	if (error) {
         NSString *cancelButtonTitle = NSLocalizedString(@"OK", @"Cancel button title for animation load error");
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[error localizedDescription] message:[error localizedFailureReason] delegate:nil cancelButtonTitle:cancelButtonTitle otherButtonTitles:nil];
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:error.localizedDescription message:error.localizedFailureReason delegate:nil cancelButtonTitle:cancelButtonTitle otherButtonTitles:nil];
 		[alertView show];
 	}
 }
@@ -228,10 +228,10 @@ static void *AVPlayerItemStatusContext = &AVPlayerItemStatusContext;
 			case AVPlayerItemStatusUnknown:
 				break;
 			case AVPlayerItemStatusReadyToPlay:
-				self.playerView.presentationRect = [[_player currentItem] presentationSize];
+				self.playerView.presentationRect = _player.currentItem.presentationSize;
 				break;
 			case AVPlayerItemStatusFailed:
-				[self stopLoadingAnimationAndHandleError:[[_player currentItem] error]];
+				[self stopLoadingAnimationAndHandleError:_player.currentItem.error];
 				break;
 		}
 	}
@@ -251,7 +251,7 @@ static void *AVPlayerItemStatusContext = &AVPlayerItemStatusContext;
 	_player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
 	_notificationToken = [[NSNotificationCenter defaultCenter] addObserverForName:AVPlayerItemDidPlayToEndTimeNotification object:item queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
 		// Simple item playback rewind.
-		[[_player currentItem] seekToTime:kCMTimeZero];
+		[_player.currentItem seekToTime:kCMTimeZero];
 	}];
 }
 
@@ -310,15 +310,15 @@ static void *AVPlayerItemStatusContext = &AVPlayerItemStatusContext;
 	CMTime outputItemTime = kCMTimeInvalid;
 	
 	// Calculate the nextVsync time which is when the screen will be refreshed next.
-	CFTimeInterval nextVSync = ([sender timestamp] + [sender duration]);
+	CFTimeInterval nextVSync = (sender.timestamp + sender.duration);
 	
-	outputItemTime = [[self videoOutput] itemTimeForHostTime:nextVSync];
+	outputItemTime = [self.videoOutput itemTimeForHostTime:nextVSync];
 	
-	if ([[self videoOutput] hasNewPixelBufferForItemTime:outputItemTime]) {
+	if ([self.videoOutput hasNewPixelBufferForItemTime:outputItemTime]) {
 		CVPixelBufferRef pixelBuffer = NULL;
-		pixelBuffer = [[self videoOutput] copyPixelBufferForItemTime:outputItemTime itemTimeForDisplay:NULL];
+		pixelBuffer = [self.videoOutput copyPixelBufferForItemTime:outputItemTime itemTimeForDisplay:NULL];
 		
-		[[self playerView] displayPixelBuffer:pixelBuffer];
+		[self.playerView displayPixelBuffer:pixelBuffer];
 		
 		if (pixelBuffer != NULL) {
 			CFRelease(pixelBuffer);
@@ -331,32 +331,32 @@ static void *AVPlayerItemStatusContext = &AVPlayerItemStatusContext;
 - (void)outputMediaDataWillChange:(AVPlayerItemOutput *)sender
 {
 	// Restart display link.
-	[[self displayLink] setPaused:NO];
+	[self.displayLink setPaused:NO];
 }
 
 #pragma mark - Image Picker Controller Delegate
 
 - (void)imagePickerController:(APLImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-	if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
 		[self.popover dismissPopoverAnimated:YES];
 	}
 	else {
 		[self dismissViewControllerAnimated:YES completion:nil];
 	}
 	
-	if ([_player currentItem] == nil) {
-		[[self lumaLevelSlider] setEnabled:YES];
-		[[self chromaLevelSlider] setEnabled:YES];
-		[[self playerView] setupGL];
+	if (_player.currentItem == nil) {
+		[self.lumaLevelSlider setEnabled:YES];
+		[self.chromaLevelSlider setEnabled:YES];
+		[self.playerView setupGL];
 	}
     
 	// Time label shows the current time of the item.
     if (self.timeView.hidden) {
-		[self.timeView.layer setBackgroundColor:[UIColor colorWithWhite:0.0 alpha:0.3].CGColor];
-		[self.timeView.layer setCornerRadius:5.0f];
-		[self.timeView.layer setBorderColor:[UIColor colorWithWhite:1.0 alpha:0.15].CGColor];
-		[self.timeView.layer setBorderWidth:1.0f];
+		(self.timeView.layer).backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.3].CGColor;
+		(self.timeView.layer).cornerRadius = 5.0f;
+		(self.timeView.layer).borderColor = [UIColor colorWithWhite:1.0 alpha:0.15].CGColor;
+		(self.timeView.layer).borderWidth = 1.0f;
 		self.timeView.hidden = NO;
 		self.currentTime.hidden = NO;
     }
@@ -371,11 +371,11 @@ static void *AVPlayerItemStatusContext = &AVPlayerItemStatusContext;
 	[self dismissViewControllerAnimated:YES completion:nil];
 	
 	// Make sure our playback is resumed from any interruption.
-	if ([_player currentItem]) {
-		[self addDidPlayToEndTimeNotificationForPlayerItem:[_player currentItem]];
+	if (_player.currentItem) {
+		[self addDidPlayToEndTimeNotificationForPlayerItem:_player.currentItem];
 	}
 	
-	[[self videoOutput] requestNotificationOfMediaDataChangeWithAdvanceInterval:ONE_FRAME_DURATION];
+	[self.videoOutput requestNotificationOfMediaDataChangeWithAdvanceInterval:ONE_FRAME_DURATION];
 	[_player play];
 	
 	picker.delegate = nil;
@@ -386,10 +386,10 @@ static void *AVPlayerItemStatusContext = &AVPlayerItemStatusContext;
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
 {
 	// Make sure our playback is resumed from any interruption.
-	if ([_player currentItem]) {
-		[self addDidPlayToEndTimeNotificationForPlayerItem:[_player currentItem]];
+	if (_player.currentItem) {
+		[self addDidPlayToEndTimeNotificationForPlayerItem:_player.currentItem];
 	}
-	[[self videoOutput] requestNotificationOfMediaDataChangeWithAdvanceInterval:ONE_FRAME_DURATION];
+	[self.videoOutput requestNotificationOfMediaDataChangeWithAdvanceInterval:ONE_FRAME_DURATION];
 	[_player play];
 	
 	self.popover.delegate = nil;
