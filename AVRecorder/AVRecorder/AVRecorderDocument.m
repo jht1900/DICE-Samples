@@ -97,7 +97,8 @@
 		if (videoDevice) {
 			self.selectedVideoDevice = videoDevice;
 			self.selectedAudioDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio];
-		} else {
+		}
+    else {
 			self.selectedVideoDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeMuxed];
 		}
 		
@@ -336,7 +337,8 @@
 		if ([self.selectedVideoDevice lockForConfiguration:&error]) {
 			self.selectedVideoDevice.activeVideoMinFrameDuration = frameRateRange.minFrameDuration;
 			[self.selectedVideoDevice unlockForConfiguration];
-		} else {
+		}
+    else {
 			dispatch_async(dispatch_get_main_queue(), ^(void) {
 				[self presentError:error];
 			});
@@ -350,8 +352,7 @@
 	{
 		[self.selectedVideoDevice lockForConfiguration:nil];
 	}
-	else
-	{
+	else {
 		[self.selectedVideoDevice unlockForConfiguration];
 	}
 }
@@ -515,7 +516,8 @@
 		if ([device lockForConfiguration:&error]) {
 			[device setTransportControlsPlaybackMode:playbackMode speed:speed];
 			[device unlockForConfiguration];
-		} else {
+		}
+    else {
 			dispatch_async(dispatch_get_main_queue(), ^(void) {
 				[self presentError:error];
 			});
@@ -565,11 +567,16 @@
 				[[NSFileManager defaultManager] removeItemAtURL:savePanel.URL error:nil]; // attempt to remove file at the desired save location before moving the recorded file to that location
 				if ([[NSFileManager defaultManager] moveItemAtURL:outputFileURL toURL:savePanel.URL error:&error]) {
 					[[NSWorkspace sharedWorkspace] openURL:savePanel.URL];
-				} else {
-					[savePanel orderOut:self];
-					[self presentError:error modalForWindow:self.windowForSheet delegate:self didPresentSelector:@selector(didPresentErrorWithRecovery:contextInfo:) contextInfo:NULL];
 				}
-			} else {
+        else {
+					[savePanel orderOut:self];
+					[self presentError:error modalForWindow:self.windowForSheet
+                    delegate:self
+          didPresentSelector:@selector(didPresentErrorWithRecovery:contextInfo:)
+                 contextInfo:NULL];
+				}
+			}
+      else {
 				// remove the temporary recording file if it's not being saved
 				[[NSFileManager defaultManager] removeItemAtURL:outputFileURL error:nil];
 			}
