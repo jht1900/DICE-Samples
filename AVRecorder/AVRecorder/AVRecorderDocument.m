@@ -134,7 +134,9 @@
 - (void)windowControllerDidLoadNib:(NSWindowController *) aController
 {
 	[super windowControllerDidLoadNib:aController];
-	
+
+  self.displayName = @"AVRecorder";
+  
 	// Attach preview to session
 	CALayer *previewViewLayer = self.previewView.layer;
 	previewViewLayer.backgroundColor = CGColorGetConstantColor(kCGColorBlack);
@@ -317,10 +319,8 @@
 - (AVFrameRateRange *)frameRateRange
 {
 	AVFrameRateRange *activeFrameRateRange = nil;
-	for (AVFrameRateRange *frameRateRange in self.selectedVideoDevice.activeFormat.videoSupportedFrameRateRanges)
-	{
-		if (CMTIME_COMPARE_INLINE([frameRateRange minFrameDuration], ==, [[self selectedVideoDevice] activeVideoMinFrameDuration]))
-		{
+	for (AVFrameRateRange *frameRateRange in self.selectedVideoDevice.activeFormat.videoSupportedFrameRateRanges) {
+		if (CMTIME_COMPARE_INLINE([frameRateRange minFrameDuration], ==, [[self selectedVideoDevice] activeVideoMinFrameDuration])) {
 			activeFrameRateRange = frameRateRange;
 			break;
 		}
@@ -332,8 +332,7 @@
 - (void)setFrameRateRange:(AVFrameRateRange *)frameRateRange
 {
 	NSError *error = nil;
-	if ([self.selectedVideoDevice.activeFormat.videoSupportedFrameRateRanges containsObject:frameRateRange])
-	{
+	if ([self.selectedVideoDevice.activeFormat.videoSupportedFrameRateRanges containsObject:frameRateRange]) {
 		if ([self.selectedVideoDevice lockForConfiguration:&error]) {
 			self.selectedVideoDevice.activeVideoMinFrameDuration = frameRateRange.minFrameDuration;
 			[self.selectedVideoDevice unlockForConfiguration];
@@ -556,7 +555,8 @@
 		dispatch_async(dispatch_get_main_queue(), ^(void) {
 			[self presentError:recordError];
 		});
-	} else {
+	}
+  else {
 		// Move the recorded temporary file to a user-specified location
 		NSSavePanel *savePanel = [NSSavePanel savePanel];
 		savePanel.allowedFileTypes = @[AVFileTypeQuickTimeMovie];
@@ -564,7 +564,8 @@
 		[savePanel beginSheetModalForWindow:self.windowForSheet completionHandler:^(NSInteger result) {
 			NSError *error = nil;
 			if (result == NSOKButton) {
-				[[NSFileManager defaultManager] removeItemAtURL:savePanel.URL error:nil]; // attempt to remove file at the desired save location before moving the recorded file to that location
+        // attempt to remove file at the desired save location before moving the recorded file to that location
+				[[NSFileManager defaultManager] removeItemAtURL:savePanel.URL error:nil];
 				if ([[NSFileManager defaultManager] moveItemAtURL:outputFileURL toURL:savePanel.URL error:&error]) {
 					[[NSWorkspace sharedWorkspace] openURL:savePanel.URL];
 				}
@@ -586,10 +587,10 @@
 
 - (BOOL)captureOutputShouldProvideSampleAccurateRecordingStart:(AVCaptureOutput *)captureOutput
 {
-    // We don't require frame accurate start when we start a recording. If we answer YES, the capture output
-    // applies outputSettings immediately when the session starts previewing, resulting in higher CPU usage
-    // and shorter battery life.
-    return NO;
+  // We don't require frame accurate start when we start a recording. If we answer YES, the capture output
+  // applies outputSettings immediately when the session starts previewing, resulting in higher CPU usage
+  // and shorter battery life.
+  return NO;
 }
 
 @end
