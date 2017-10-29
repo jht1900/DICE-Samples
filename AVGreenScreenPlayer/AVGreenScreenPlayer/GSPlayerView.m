@@ -185,10 +185,10 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink, const CVTimeSt
 	OSStatus err = noErr;
 
 	if (!_videoInfo || !CMVideoFormatDescriptionMatchesImageBuffer(_videoInfo, pixelBuffer)) {
-        if (_videoInfo) {
-            CFRelease(_videoInfo);
-            _videoInfo = nil;
-        }
+		if (_videoInfo) {
+				CFRelease(_videoInfo);
+				_videoInfo = nil;
+		}
 		err = CMVideoFormatDescriptionCreateForImageBuffer(NULL, pixelBuffer, &_videoInfo);
 	}
 
