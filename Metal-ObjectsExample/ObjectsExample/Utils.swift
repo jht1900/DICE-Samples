@@ -110,7 +110,7 @@ func createPlane(_ device : MTLDevice) -> (MTLBuffer, Int)
 	
     let geoBuffer = device.makeBuffer(length: length, options: MTLResourceOptions.storageModeManaged)
 
-    let geoPtr = geoBuffer.contents().bindMemory(to: CFloat.self, capacity: length)
+  let geoPtr = geoBuffer?.contents().bindMemory(to: CFloat.self, capacity: length)
     
 	geoPtr.assign(from: &verts, count: verts.count)
 	geoBuffer.didModifyRange(NSMakeRange(0, verts.count*MemoryLayout<Float>.size))

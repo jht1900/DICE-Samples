@@ -76,7 +76,7 @@ class RenderableObject
 	
 	func DrawZPass(_ enc :MTLRenderCommandEncoder, offset : Int)
 	{
-		enc.setVertexBufferOffset(offset, at: 1)
+		enc.setVertexBufferOffset(offset, index: 1)
 		
 		if(indexBuffer != nil)
 		{
@@ -90,8 +90,8 @@ class RenderableObject
 	
 	func Draw(_ enc : MTLRenderCommandEncoder, offset : Int)
 	{
-		enc.setVertexBufferOffset(offset, at: 1)
-		enc.setFragmentBufferOffset(offset, at: 1)
+		enc.setVertexBufferOffset(offset, index: 1)
+		enc.setFragmentBufferOffset(offset, index: 1)
 		
 		if(indexBuffer != nil)
 		{
@@ -114,9 +114,9 @@ class StaticRenderableObject : RenderableObject
 	
 	override func Draw(_ enc: MTLRenderCommandEncoder, offset: Int)
 	{
-		enc.setVertexBuffer(mesh, offset: 0, at: 0)
-		enc.setVertexBytes(&objectData, length: MemoryLayout<ObjectData>.size, at: 1)
-		enc.setFragmentBytes(&objectData, length: MemoryLayout<ObjectData>.size, at: 1)
+		enc.setVertexBuffer(mesh, offset: 0, index: 0)
+		enc.setVertexBytes(&objectData, length: MemoryLayout<ObjectData>.size, index: 1)
+		enc.setFragmentBytes(&objectData, length: MemoryLayout<ObjectData>.size, index: 1)
 		
 		enc.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: count)
 	}
